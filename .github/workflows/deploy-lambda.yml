@@ -12,16 +12,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install dependencies
+      - name: Debug — show files
+        run: ls -R .
+
+      - name: Find and copy function file
         run: |
-          if [ -s requirements.txt ]; then
-            pip install -r requirements.txt -t .
-          else
-            echo "No dependencies"
-          fi
+          FILE=$(find . -name "lambda_function.py" | head -n 1)
+          echo "Found lambda file at: $FILE"
+          cp "$FILE" ./lambda_function.py
 
       - name: Create deployment package
-        run: zip -j function.zip lambda_function.py
+        run: zip -r function.zip lambda_function.py
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
