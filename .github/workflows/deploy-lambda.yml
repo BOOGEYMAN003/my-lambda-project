@@ -12,17 +12,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Debug — show files
+      - name: Debug — Show files
         run: ls -R .
 
-      - name: Find and copy function file
-        run: |
-          FILE=$(find . -name "lambda_function.py" | head -n 1)
-          echo "Found lambda file at: $FILE"
-          cp "$FILE" ./lambda_function.py
-
       - name: Create deployment package
-        run: zip -r function.zip lambda_function.py
+        run: |
+          zip -r function.zip .
+          echo "ZIP CONTENTS:"
+          unzip -l function.zip
+          ls -lh function.zip
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
