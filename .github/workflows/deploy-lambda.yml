@@ -12,16 +12,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install dependencies (safe)
+      - name: Install dependencies
         run: |
-          if [ -f requirements.txt ] && [ -s requirements.txt ]; then
+          if [ -s requirements.txt ]; then
             pip install -r requirements.txt -t .
           else
-            echo "No dependencies to install"
+            echo "No dependencies"
           fi
 
       - name: Create deployment package
-        run: zip -r function.zip .
+        run: zip -j function.zip lambda_function.py
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
