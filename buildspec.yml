@@ -1,0 +1,16 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.11  # Make sure this matches your Lambda runtime
+    commands:
+      - echo Installing dependencies...
+      - pip install -r requirements.txt -t .  # Installs libraries into the current folder
+  build:
+    commands:
+      - echo Zipping the deployment package...
+      - zip -r deployment_package.zip . -x "*.git*" "buildspec.yml" # Zips everything except git files and this spec file
+artifacts:
+  files:
+    - deployment_package.zip
