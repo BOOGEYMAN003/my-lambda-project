@@ -2,7 +2,8 @@ name: Deploy Lambda
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
   deploy:
@@ -12,15 +13,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Debug — Show files
+      - name: Show files
         run: ls -R .
 
       - name: Create deployment package
         run: |
-          zip -r function.zip .
-          echo "ZIP CONTENTS:"
-          unzip -l function.zip
-          ls -lh function.zip
+          mkdir package
+          cp lambda_function.py package/
+          pip install -r requirements.txt -t package/
+          cd package
+          zip -r ../function.zip .
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
